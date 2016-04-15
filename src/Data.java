@@ -56,7 +56,15 @@ class Data {
         return sensor;
     }
 
-    public int getNode() {
+    public int getNodeID() {
         return node;
+    }
+
+    public String getValue() {
+        return data;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

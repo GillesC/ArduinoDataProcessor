@@ -13,8 +13,8 @@ public class Main {
         //      2.b data-vent
         //      2.c data-light
 
-        ProcessBuilder b = new ProcessBuilder("java",
-                "-version");
+        ProcessBuilder b = new ProcessBuilder("python",
+                "grabserial");
         Terminal.exec(b);
         new Processor().run();
     }
