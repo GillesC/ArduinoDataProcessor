@@ -19,4 +19,12 @@ public class Nodes {
             this.nodeData.add(n);
         }
     }
+
+    public Node get(int nodeID) {
+        for (Node n: nodeData) {
+            if(n.getID()==nodeID) return n;
+        }
+        return null;
+    }
+
 }

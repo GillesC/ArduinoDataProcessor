@@ -19,7 +19,7 @@ class Terminal {
             String readLine;
 
             while ((readLine = processOutputReader.readLine()) != null) {
-                System.out.println("\tProcessing line:\t"+readLine+System.lineSeparator());
+                System.out.println("\tReceived:\t"+readLine+System.lineSeparator());
                 processArduinoOutput(readLine);
             }
 
@@ -35,6 +35,7 @@ class Terminal {
             data = new Data(line);
             Data.pushData(data);
         } catch (Exception e) {
+            System.out.println("Data hasn't been saved because of wrong format.");
             e.printStackTrace();
         }
     }

@@ -23,14 +23,22 @@ class Data {
     // TODO ook checken op juiste sensor
     Data(String line) throws Exception {
         String[] dataSplit = line.split("#");
-        if(dataSplit.length!=4){
+        if(dataSplit.length!=4 || !correctSensor(dataSplit[0])){
             System.err.println("Wrong format, deleting data... \t RECEIVED: "+line);
-            throw new Exception("WRONG FORMAT");
+            throw new Exception("WRONG FORMAT or No valid sensor");
         }
         sensor = dataSplit[0];
         node = Integer.parseInt(dataSplit[1]);
         data = dataSplit[2];
         time = dataSplit[3];
+    }
+
+    private boolean correctSensor(String sensor) {
+        boolean match = false;
+        if(sensor.equals(LIGHT)) match = true;
+        if(sensor.equals(TEMPERATURE)) match = true;
+        if(sensor.equals(VENTILATOR)) match = true;
+        return match;
     }
 
     static void pushData(Data d){

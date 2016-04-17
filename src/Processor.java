@@ -41,12 +41,12 @@ class Processor implements Runnable {
         // Set data from node
         for (Data d : listOfData) {
             int nodeID = d.getNodeID();
-            if (nodeToDataMapping.containsKey(nodeID)) {
-                List<Data> listForNode = nodeToDataMapping.get(nodeID);
-                listForNode.add(d);
-            } else {
-                nodeToDataMapping.put(nodeID, new ArrayList<>());
+            if (!nodeToDataMapping.containsKey(nodeID)) {
+                System.out.println("New node found: "+nodeID);
+                nodeToDataMapping.put(nodeID, new ArrayList<Data>());
             }
+            System.out.println("Saving data from that node: "+d);
+            nodeToDataMapping.get(nodeID).add(d);
         }
 
 
@@ -89,7 +89,11 @@ class Processor implements Runnable {
 
 
         for(int nodeID: nodeToDataMapping.keySet()){
-            Node n = new Node(nodeID);
+            Node n;
+            n = nodes.get(nodeID);
+            if(n==null){
+                n = new Node(nodeID);
+            }
             System.out.println("Node "+n.getID()+" found.");
             System.out.println("\t pushing data");
             n.pushData(nodeToDataMapping.get(nodeID));
@@ -146,7 +150,7 @@ class Processor implements Runnable {
 
             FileWriter fileWriter = new FileWriter(file.getName(), append);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-            bufferWriter.write(System.lineSeparator()+data);
+            bufferWriter.write(data+"\n");
             bufferWriter.close();
 
             System.out.println("Done");
@@ -159,8 +163,8 @@ class Processor implements Runnable {
     private String listToDataString(List<Data> dataList) {
         StringBuilder b = new StringBuilder();
         for (Data d : dataList) {
-            b.append(d.getTime() + "," + d.getValue() + System.lineSeparator());
-            System.out.println("Adding data line: "+d.getTime() + "," + d.getValue() + System.lineSeparator());
+            b.append(d.getTime() + "," + d.getValue() + "\n");
+            System.out.println("Adding data line: "+d.getTime() + "," + d.getValue());
         }
         return b.toString().trim();
     }

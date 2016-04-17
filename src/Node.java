@@ -6,17 +6,16 @@ import java.util.ArrayList;
  */
 class Node {
     private int nodeID;
-    private ArrayList<Data> nodeData = null;
+    private ArrayList<Data> nodeData = new ArrayList<>();
 
     Node(int nodeID) {
         this.nodeID = nodeID;
     }
 
     void pushData(ArrayList<Data> data){
-        if(nodeData==null){
-            nodeData = new ArrayList<>();
-        }
         this.nodeData.addAll(data);
+        System.out.println("\tPushed data to node: "+nodeID);
+        System.out.println("\t"+data);
     }
 
     public int getID() {
