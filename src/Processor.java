@@ -150,7 +150,7 @@ class Processor implements Runnable {
 
             FileWriter fileWriter = new FileWriter(file.getName(), append);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-            bufferWriter.write(data+"\n");
+            bufferWriter.write(data);
             bufferWriter.close();
 
             System.out.println("Done");
