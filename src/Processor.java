@@ -1,9 +1,6 @@
 import com.google.gson.Gson;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +16,11 @@ class Processor implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Run is started from ProcessorThread");
         while (true) {
             try {
                 Thread.sleep(PERIOD);
+                System.out.println("Starting processing!!! :D");
                 processData();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -79,22 +78,64 @@ class Processor implements Runnable {
 
     private void printDataJSON(HashMap<Integer, ArrayList<Data>> nodeToDataMapping, String fileName) {
         Gson gson = new Gson();
-        Nodes nodes = new Nodes();
-        for(int i=0; i<nodeToDataMapping.size();i++){
-            Node n = new Node(nodeToDataMapping.get(i).get(0).getNodeID());
-            n.pushData(nodeToDataMapping.get(i));
+        String dataRead = readFromFile(fileName);
+        Nodes nodes;
+
+        if(dataRead==null){
+            nodes = new Nodes();
+        }else{
+            nodes = gson.fromJson(dataRead, Nodes.class);
+        }
+
+
+        for(int nodeID: nodeToDataMapping.keySet()){
+            Node n = new Node(nodeID);
+            System.out.println("Node "+n.getID()+" found.");
+            System.out.println("\t pushing data");
+            n.pushData(nodeToDataMapping.get(nodeID));
             nodes.pushNode(n);
         }
+
         String data = gson.toJson(nodes,Nodes.class);
-        writeToFile(data, fileName);
+        writeToFile(data, fileName, false);
+    }
+
+    private String readFromFile(String fileName) {
+        try {
+            File file = new File(fileName);
+
+            //if file doesnt exists, then create it
+            if (!file.exists()) {
+                return null;
+            }
+
+            FileReader fileReader = new FileReader(file.getName());
+            try (BufferedReader reader = new BufferedReader(fileReader)) {
+                StringBuilder sb = new StringBuilder();
+                String line = reader.readLine();
+
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = reader.readLine();
+                }
+                System.out.println("Done");
+                return sb.toString();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void printDataCSV(List<Data> dataList, String fileName) {
         String data = listToDataString(dataList);
-        writeToFile(data,fileName);
+        writeToFile(data,fileName, true);
     }
 
-    private void writeToFile(String data, String fileName) {
+    private void writeToFile(String data, String fileName, boolean append) {
         try {
             File file = new File(fileName);
 
@@ -103,10 +144,10 @@ class Processor implements Runnable {
                 file.createNewFile();
             }
 
-            FileWriter fileWritter = new FileWriter(file.getName(), true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-            bufferWritter.write(data);
-            bufferWritter.close();
+            FileWriter fileWriter = new FileWriter(file.getName(), append);
+            BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+            bufferWriter.write(System.lineSeparator()+data);
+            bufferWriter.close();
 
             System.out.println("Done");
 
@@ -119,6 +160,7 @@ class Processor implements Runnable {
         StringBuilder b = new StringBuilder();
         for (Data d : dataList) {
             b.append(d.getTime() + "," + d.getValue() + System.lineSeparator());
+            System.out.println("Adding data line: "+d.getTime() + "," + d.getValue() + System.lineSeparator());
         }
         return b.toString().trim();
     }

@@ -11,20 +11,21 @@ import java.util.List;
 class Data {
     private static List<Data> list = Collections.synchronizedList(new ArrayList<>());
 
-    public static final String TEMPERATURE = "TEMP";
-    public static final String LIGHT = "LIGHT";
-    public static final String VENTILATOR = "VENT";
+    static final String TEMPERATURE = "TEMP";
+    static final String LIGHT = "LIGHT";
+    static final String VENTILATOR = "VENT";
 
     private int node;
     private String sensor;
     private String data;
     private String time;
 
-    Data(String line) {
+    // TODO ook checken op juiste sensor
+    Data(String line) throws Exception {
         String[] dataSplit = line.split("#");
         if(dataSplit.length!=4){
-            System.err.println("Wrong format, deleting data...");
-            return;
+            System.err.println("Wrong format, deleting data... \t RECEIVED: "+line);
+            throw new Exception("WRONG FORMAT");
         }
         sensor = dataSplit[0];
         node = Integer.parseInt(dataSplit[1]);
@@ -52,19 +53,19 @@ class Data {
                 '}';
     }
 
-    public String getSensor() {
+    String getSensor() {
         return sensor;
     }
 
-    public int getNodeID() {
+    int getNodeID() {
         return node;
     }
 
-    public String getValue() {
+    String getValue() {
         return data;
     }
 
-    public String getTime() {
+    String getTime() {
         return time;
     }
 }

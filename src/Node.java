@@ -4,15 +4,26 @@ import java.util.ArrayList;
  * Created by Gilles Callebaut on 15/04/2016.
  *
  */
-public class Node {
+class Node {
     private int nodeID;
-    private ArrayList<Data> nodeData;
+    private ArrayList<Data> nodeData = null;
 
-    public Node(int nodeID) {
+    Node(int nodeID) {
         this.nodeID = nodeID;
     }
 
-    public void pushData(ArrayList<Data> data){
-        this.nodeData = data;
+    void pushData(ArrayList<Data> data){
+        if(nodeData==null){
+            nodeData = new ArrayList<>();
+        }
+        this.nodeData.addAll(data);
+    }
+
+    public int getID() {
+        return nodeID;
+    }
+
+    public ArrayList<Data> getData() {
+        return nodeData;
     }
 }

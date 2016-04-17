@@ -11,6 +11,12 @@ public class Nodes {
     }
 
     public void pushNode(Node n){
-        this.nodeData.add(n);
+        if(nodeData.contains(n)){
+            // just push the data
+            int index = nodeData.indexOf(n);
+            nodeData.get(index).pushData(n.getData());
+        }else {
+            this.nodeData.add(n);
+        }
     }
 }

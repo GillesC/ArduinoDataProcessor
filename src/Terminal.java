@@ -7,24 +7,18 @@ import java.io.InputStreamReader;
  *
  */
 
-public class Terminal {
-    private static boolean pull = true;
-    public static StringBuilder processOutput;
-
-
-    public static String exec(ProcessBuilder processBuilder) throws IOException, InterruptedException {
+class Terminal {
+    static String exec(ProcessBuilder processBuilder) throws IOException, InterruptedException {
         processBuilder.redirectErrorStream(true);
 
         final Process process = processBuilder.start();
-
-        processOutput = new StringBuilder();
 
         try (
                 BufferedReader processOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream()))
         ) {
             String readLine;
 
-            while ((readLine = processOutputReader.readLine()) != null && pull) {
+            while ((readLine = processOutputReader.readLine()) != null) {
                 System.out.println("\tProcessing line:\t"+readLine+System.lineSeparator());
                 processArduinoOutput(readLine);
             }
@@ -32,11 +26,16 @@ public class Terminal {
             process.waitFor();
         }
 
-        return processOutput.toString().trim();
+        return "".trim();
     }
 
     private static void processArduinoOutput(String line) {
-        Data data = new Data(line);
-        Data.pushData(data);
+        Data data = null;
+        try {
+            data = new Data(line);
+            Data.pushData(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
