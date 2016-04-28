@@ -76,4 +76,23 @@ class Data {
     String getTime() {
         return time;
     }
+
+    public static void clearAll() {
+        list.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Data data1 = (Data) o;
+
+        if (node != data1.node) return false;
+        if (sensor != null ? !sensor.equals(data1.sensor) : data1.sensor != null) return false;
+        if (data != null ? !data.equals(data1.data) : data1.data != null) return false;
+        return time != null ? time.equals(data1.time) : data1.time == null;
+
+    }
+
 }

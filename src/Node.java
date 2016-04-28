@@ -1,4 +1,6 @@
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Gilles Callebaut on 15/04/2016.
@@ -13,9 +15,18 @@ class Node {
     }
 
     void pushData(ArrayList<Data> data){
-        this.nodeData.addAll(data);
-        System.out.println("\tPushed data to node: "+nodeID);
-        System.out.println("\t"+data);
+        ArrayList<Data> temp = new ArrayList<>();
+
+        for(Data d: data){
+            boolean isEqual = false;
+            for(Data nodeD: this.nodeData){
+                if(d.equals(nodeD)){
+                    isEqual = true;
+                }
+            }
+            if(!isEqual) temp.add(d);
+        }
+        this.nodeData.addAll(temp);
     }
 
     public int getID() {

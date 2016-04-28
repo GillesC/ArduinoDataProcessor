@@ -74,6 +74,12 @@ class Processor implements Runnable {
         printDataCSV(ligthData, "data-light.csv");
 
         printDataJSON(nodeToDataMapping,"data-nodes.json");
+
+        clearAll();
+    }
+
+    private void clearAll() {
+        Data.clearAll();
     }
 
     private void printDataJSON(HashMap<Integer, ArrayList<Data>> nodeToDataMapping, String fileName) {
@@ -146,8 +152,8 @@ class Processor implements Runnable {
             //if file doesnt exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
-            }
 
+            }
             FileWriter fileWriter = new FileWriter(file.getName(), append);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
             bufferWriter.write(data);
@@ -163,9 +169,9 @@ class Processor implements Runnable {
     private String listToDataString(List<Data> dataList) {
         StringBuilder b = new StringBuilder();
         for (Data d : dataList) {
-            b.append(d.getTime() + "," + d.getValue() + "\n");
+            b.append("\n"+d.getTime() + "," + d.getValue() + "\n");
             System.out.println("Adding data line: "+d.getTime() + "," + d.getValue());
         }
-        return b.toString().trim();
+        return b.toString().replaceAll("(?m)^[ \t]*\r?\n", "");
     }
 }
