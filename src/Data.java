@@ -10,6 +10,7 @@ import java.util.List;
  */
 class Data {
     private static List<Data> list = Collections.synchronizedList(new ArrayList<>());
+    private static List<NodeAlive> liveNodeslist = Collections.synchronizedList(new ArrayList<>());
 
     static final String TEMPERATURE = "TEMP";
     static final String LIGHT = "LIGHT";
@@ -79,6 +80,7 @@ class Data {
 
     public static void clearAll() {
         list.clear();
+        liveNodeslist.clear();
     }
 
     @Override
@@ -95,4 +97,14 @@ class Data {
 
     }
 
+    public static void pushNodeIsAlive(String id) {
+        NodeAlive a = new NodeAlive(id);
+        if(!liveNodeslist.contains(a)){
+            liveNodeslist.add(a);
+        }
+    }
+
+    public static List<NodeAlive> getLiveNodes() {
+        return liveNodeslist;
+    }
 }

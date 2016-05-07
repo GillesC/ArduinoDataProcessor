@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -75,7 +76,17 @@ class Processor implements Runnable {
 
         printDataJSON(nodeToDataMapping,"data-nodes.json");
 
+        printArrayJSON(Data.getLiveNodes(),"data-live-nodes.json");
+
         clearAll();
+    }
+
+    private void printArrayJSON(List<String> liveNodes, String fileName) {
+        NodesAlive nA = new NodesAlive(liveNodes);
+        Gson gson = new Gson();
+        String data = gson.toJson(nA,NodesAlive.class);
+        System.out.println("JSON data for live nodes: "+data);
+        writeToFile(data, fileName, false);
     }
 
     private void clearAll() {

@@ -32,6 +32,9 @@ class Terminal {
     private static void processArduinoOutput(String line) {
         Data data = null;
         try {
+            if(line.charAt(0)=='X'){
+                Data.pushNodeIsAlive(line.substring(1));
+            }
             data = new Data(line);
             Data.pushData(data);
         } catch (Exception e) {
