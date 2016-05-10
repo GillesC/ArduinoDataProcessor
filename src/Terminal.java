@@ -33,10 +33,12 @@ class Terminal {
         Data data = null;
         try {
             if(line.charAt(0)=='X'){
+                System.out.println("Alive message!");
                 Data.pushNodeIsAlive(line.substring(1));
+            }else{
+                data = new Data(line);
+                Data.pushData(data);
             }
-            data = new Data(line);
-            Data.pushData(data);
         } catch (Exception e) {
             System.out.println("Data hasn't been saved because of wrong format.");
             e.printStackTrace();

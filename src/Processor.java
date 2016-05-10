@@ -81,7 +81,7 @@ class Processor implements Runnable {
         clearAll();
     }
 
-    private void printArrayJSON(List<String> liveNodes, String fileName) {
+    private void printArrayJSON(List<NodeAlive> liveNodes, String fileName) {
         NodesAlive nA = new NodesAlive(liveNodes);
         Gson gson = new Gson();
         String data = gson.toJson(nA,NodesAlive.class);
